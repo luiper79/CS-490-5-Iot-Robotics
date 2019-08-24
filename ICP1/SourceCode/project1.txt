@@ -1,3 +1,5 @@
+//CS-490-5/IoT-Robotics(Luis Usseglio, Kavin Arumugan, and Tonderia Kambarami)
+
 int switchState = 0;
 void setup() {
   pinMode(3, OUTPUT);
@@ -11,37 +13,27 @@ void loop(){
   if(switchState == LOW){
   // the button is not pressed
 
-  digitalWrite(3, HIGH); //green LED
-  
-  
-  digitalWrite(4, HIGH); //red LED
- 
-
-  digitalWrite(5, HIGH); //yellow LED
-
+  digitalWrite(3, HIGH); //green LED on  
+  digitalWrite(4, HIGH); //red LED on
+  digitalWrite(5, HIGH); //yellow LED on
   }
 
   else{
-
-  start:
-  digitalWrite(4, HIGH);
-  digitalWrite(5, LOW);
-  digitalWrite(3, LOW);
-  delay(1000);
-
-   
-  digitalWrite(4, LOW);
-  digitalWrite(3, HIGH);
-
-  delay(750);// wait for a quarter seconds
-  digitalWrite(5, HIGH);
-  digitalWrite(3, LOW);
-  
-  delay(500);
-  
-  digitalWrite(5, LOW);
-
-  goto start;
-  }
-
-}
+    start:
+    digitalWrite(4, HIGH);//red LED on
+    digitalWrite(5, LOW);//yellow LED off
+    digitalWrite(3, LOW);//green LED off
+    delay(1000);// wait for one second
+    
+    digitalWrite(4, LOW);//red LED off
+    digitalWrite(3, HIGH);//green LED on  
+    delay(750);// wait for a three quarters of a second
+    
+    digitalWrite(5, HIGH); //yellow LED on
+    digitalWrite(3, LOW); //green LED off
+    delay(500);// wait for half of a second
+    
+    digitalWrite(5, LOW);//yellow LED off
+    goto start;
+    }
+ }
