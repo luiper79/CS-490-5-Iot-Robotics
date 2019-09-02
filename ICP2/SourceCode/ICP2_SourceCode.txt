@@ -66,12 +66,12 @@ void loop(){
   lcd.clear();
   start: //label 
   error=0;
-  if(BPM < 100){
-    digitalWrite(blinkGreen,HIGH);
+  if(BPM < 100){                      //Code added to part 3 of project
+    digitalWrite(blinkGreen,HIGH);    //When BPM lower than 100 green ligth goes on
     delay(500); 
   }
-  if(BPM > 170){
-    digitalWrite(blinkYellow,HIGH);
+  if(BPM > 170){                       //Code added to part 3 of project
+    digitalWrite(blinkYellow,HIGH);    //When BPM higher than 170 yellow ligth goes on
     delay(500); 
   }
   lcd.setCursor(0, 0);
