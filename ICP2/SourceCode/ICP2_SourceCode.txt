@@ -1,16 +1,16 @@
-//CS-490-5/IoT-Robotics(Luis Usseglio, Kavin Arumugan, and Tonderia Kambarami)
+//CS-490-5/IoT-Robotics(Luis Usseglio, Tonderia Kambarami, John Purk, and Bader Reed)
 
 #include <SoftwareSerial.h>
 #define DEBUG true
 SoftwareSerial esp8266(9,10); 
-#include <LiquidCrystal.h>
+#include <LiquidCrystal_PCF8574.h>
 #include <stdlib.h>
-LiquidCrystal lcd(12,11,5,4,3,2);
+LiquidCrystal_PCF8574 lcd(0x27);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
-#define SSID "Your Wifi Name"     // "SSID-WiFiname" 
-#define PASS "Your Wifi Password"       // "password"
+#define SSID "lumarc"     // "SSID-WiFiname" 
+#define PASS "200979"       // "password"
 #define IP "184.106.153.149"// thingspeak.com ip
-String msg = "GET /update?key=UD61QU8TOLW4WVYL"; //change it with your api key like "GET /update?key=Your Api Key"
+String msg = "GET /update?key=UWW7WVZLQ9EFR4S9"; //change it with your api key like "GET /update?key=Your Api Key"
 
 //Variables
 float temp;
@@ -18,7 +18,9 @@ int hum;
 String tempC;
 int error;
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
-int blinkPin = 13;                // pin to blink led at each beat
+int blinkPin = 4;                // pin to blink Blue led at each beat
+int blinkYellow = 6;                // pin to blink Yellow led  at each beat higher than 170
+int blinkGreen = 7;                // pin to blink Green led  at each beat lower than 100
 int fadePin = 5;
 int fadeRate = 0;
 
@@ -43,13 +45,14 @@ volatile boolean secondBeat = false;      // used to seed rate array so we start
 
 void setup()
 {
+  lcd.setBacklight(255);
   lcd.begin(16, 2);
   lcd.print("circuitdigest.com");
   delay(100);
   lcd.setCursor(0,1);
   lcd.print("Connecting...");
-  Serial.begin(9600); //or use default 115200.
-  esp8266.begin(9600);
+  Serial.begin(115200); //or use default 115200.
+  esp8266.begin(115200);
   Serial.println("AT");
   esp8266.println("AT");
   delay(5000);
@@ -63,6 +66,14 @@ void loop(){
   lcd.clear();
   start: //label 
   error=0;
+  if(BPM < 100){
+    digitalWrite(blinkGreen,HIGH);
+    delay(500); 
+  }
+  if(BPM > 170){
+    digitalWrite(blinkYellow,HIGH);
+    delay(500); 
+  }
   lcd.setCursor(0, 0);
   lcd.print("BPM = ");
   lcd.print(BPM);
